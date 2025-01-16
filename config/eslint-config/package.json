@@ -1,0 +1,26 @@
+{
+  "name": "@saas/eslint-config",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./base": "./base.cjs",
+    "./next-js": "./next.cjs",
+    "./node": "./node.cjs"
+  },
+  "files": [
+    "base.cjs",
+    "next.cjs",
+    "node.cjs"
+  ],
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^2.2.2",
+    "@saas/prettier": "workspace:*"
+  },
+  "prettier": "@saas/prettier",
+  "eslintConfig": {
+    "extends": [
+      "./base.cjs"
+    ]
+  }
+}
