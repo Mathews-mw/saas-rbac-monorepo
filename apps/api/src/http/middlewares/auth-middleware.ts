@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import fastifyPlugin from 'fastify-plugin';
 
+import { prisma } from '@/lib/prisma';
 import { UnauthorizedError } from '../routes.ts/_errors/unauthorized-error';
 
 export const authMiddleware = fastifyPlugin(async (app: FastifyInstance) => {
@@ -13,6 +14,33 @@ export const authMiddleware = fastifyPlugin(async (app: FastifyInstance) => {
 			} catch {
 				throw new UnauthorizedError('Invalid auth token');
 			}
+		};
+
+		request.getUserMembership = async (slug: string) => {
+			const userId = await request.getCurrentUserId();
+
+			const member = await prisma.member.findFirst({
+				where: {
+					userId,
+					organization: {
+						slug,
+					},
+				},
+				include: {
+					organization: true,
+				},
+			});
+
+			if (!member) {
+				throw new UnauthorizedError(`You're not a member of this organization`);
+			}
+
+			const { organization, ...membership } = member;
+
+			return {
+				membership,
+				organization,
+			};
 		};
 	});
 });
