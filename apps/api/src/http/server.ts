@@ -1,5 +1,8 @@
 import fastify from 'fastify';
+import fastifyJwt from '@fastify/jwt';
 import fastifyCors from '@fastify/cors';
+import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUi from '@fastify/swagger-ui';
 import {
 	jsonSchemaTransform,
 	serializerCompiler,
@@ -7,16 +10,18 @@ import {
 	ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 
+import { errorHandler } from './error-handler';
+import { getProfile } from './routes.ts/auth/get-profile';
 import { createAccount } from './routes.ts/auth/create-account';
-import fastifySwagger from '@fastify/swagger';
-import fastifySwaggerUi from '@fastify/swagger-ui';
+import { requestPasswordRecover } from './routes.ts/auth/request-password-recover';
 import { authenticateWithPassword } from './routes.ts/auth/authenticate-with-password';
-import fastifyJwt from '@fastify/jwt';
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
+
+app.setErrorHandler(errorHandler);
 
 app.register(fastifySwagger, {
 	openapi: {
@@ -42,6 +47,8 @@ app.register(fastifyCors);
 
 app.register(authenticateWithPassword);
 app.register(createAccount);
+app.register(getProfile);
+app.register(requestPasswordRecover);
 
 app.listen({ port: 3333 }).then(() => {
 	console.log('Server is running and listening on port 3333');
