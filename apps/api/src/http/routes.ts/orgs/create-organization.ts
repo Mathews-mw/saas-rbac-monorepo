@@ -12,7 +12,7 @@ export async function createOrganization(app: FastifyInstance) {
 		.withTypeProvider<ZodTypeProvider>()
 		.register(authMiddleware)
 		.post(
-			'/organization',
+			'/organizations',
 			{
 				schema: {
 					tags: ['organizations'],
@@ -42,9 +42,7 @@ export async function createOrganization(app: FastifyInstance) {
 					});
 
 					if (organizationByDomain) {
-						throw new BadRequestError(
-							'Another organization with same domain already exists'
-						);
+						throw new BadRequestError('Another organization with same domain already exists');
 					}
 				}
 

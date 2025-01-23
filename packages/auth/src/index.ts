@@ -1,10 +1,5 @@
 import { z } from 'zod';
-import {
-	AbilityBuilder,
-	CreateAbility,
-	createMongoAbility,
-	MongoAbility,
-} from '@casl/ability';
+import { AbilityBuilder, CreateAbility, createMongoAbility, MongoAbility } from '@casl/ability';
 
 import { User } from './models/user';
 import { permissions } from './permissions';
@@ -44,6 +39,9 @@ export function defineAbilityFor(user: User) {
 			return subject.__typename;
 		},
 	});
+
+	ability.can = ability.can.bind(ability);
+	ability.cannot = ability.cannot.bind(ability);
 
 	return ability;
 }
