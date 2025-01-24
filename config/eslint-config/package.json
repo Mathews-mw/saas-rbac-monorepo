@@ -5,7 +5,7 @@
   "private": true,
   "exports": {
     "./base": "./base.cjs",
-    "./next-js": "./next.cjs",
+    "./next": "./next.cjs",
     "./node": "./node.cjs"
   },
   "files": [
