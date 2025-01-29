@@ -1,42 +1,5 @@
-import Link from 'next/link';
-import Image from 'next/image';
-
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { SignInForm } from './sign-in-form';
 
 export default function SignInPage() {
-	return (
-		<form action="" className="space-y-4">
-			<div className="space-y-1">
-				<Label htmlFor="email">E-mail</Label>
-				<Input name="email" id="email" type="email" />
-			</div>
-
-			<div className="space-y-1">
-				<Label htmlFor="password">Password</Label>
-				<Input name="password" id="password" type="password" />
-			</div>
-
-			<Link href="/auth/forgot-password" className="text-xs font-medium text-foreground hover:underline">
-				Forgot your password?
-			</Link>
-
-			<Button type="submit" className="w-full">
-				Sign in with e-mail
-			</Button>
-
-			<Button asChild type="button" variant="link" size="sm" className="w-full">
-				<Link href="/auth/sign-up">Create new account</Link>
-			</Button>
-
-			<Separator />
-
-			<Button type="submit" variant="outline" className="w-full">
-				<Image src="/github-icon.svg" alt="Github icon" className="mr-2 size-7 dark:invert" width={32} height={32} />
-				Sign in with Github
-			</Button>
-		</form>
-	);
+	return <SignInForm />;
 }
