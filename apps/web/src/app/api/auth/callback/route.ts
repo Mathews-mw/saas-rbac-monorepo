@@ -1,7 +1,7 @@
 import { cookies as nextCookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { signInWithGithub } from '@/_http/sign-in-with-github';
+import { signInWithGithub } from '@/_http/requests/sign-in-with-github';
 
 export async function GET(request: NextRequest) {
 	const searchParams = request.nextUrl.searchParams;

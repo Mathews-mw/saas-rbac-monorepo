@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { HTTPError } from 'ky';
 import { cookies as nextCookies } from 'next/headers';
 
-import { signInWithCredentials } from '@/_http/sign-in-with-credentials';
+import { signInWithCredentials } from '@/_http/requests/sign-in-with-credentials';
 
 const signInSchema = z.object({
 	email: z.string().email({ message: 'Please, provide a valid e-mail.' }),
