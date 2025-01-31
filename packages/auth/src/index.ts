@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { AbilityBuilder, CreateAbility, createMongoAbility, MongoAbility } from '@casl/ability';
 
+import { Role } from './roles';
 import { User } from './models/user';
 import { permissions } from './permissions';
 import { userSubject } from './subjects/user';
@@ -8,6 +9,8 @@ import { inviteSubject } from './subjects/invite';
 import { projectSubject } from './subjects/project';
 import { billingSubject } from './subjects/billing';
 import { organizationSubject } from './subjects/organization';
+
+export type { Role };
 
 // type AppAbilities = UserSubject | ProjectSubject | ['manage', 'all'];
 
