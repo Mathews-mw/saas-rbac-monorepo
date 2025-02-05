@@ -1,7 +1,4 @@
-import Link from 'next/link';
-
-import { getCurrentOrg } from '@/auth/auth';
-import { getOrganizations } from '@/_http/requests/get-organizations';
+'use client';
 
 import { AvatarImage } from '@radix-ui/react-avatar';
 import { Avatar, AvatarFallback } from './ui/avatar';
@@ -16,17 +13,24 @@ import {
 } from './ui/dropdown-menu';
 
 import { ChevronsUpDown, PlusCircle } from 'lucide-react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getProjects } from '@/_http/requests/get-projects';
 
-export async function OrganizationSwitcher() {
-	const currentOrgCookies = await getCurrentOrg();
-	const { organizations } = await getOrganizations();
+export function ProjectSwitcher() {
+	const { slug: orgSlug } = useParams<{ slug: string }>();
 
-	const currentOrganization = organizations.find((org) => org.slug === currentOrgCookies);
+	const { data: projects } = useQuery({
+		queryKey: ['projects', orgSlug],
+		queryFn: async () => getProjects({ org: orgSlug }),
+		enabled: !!orgSlug,
+	});
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className="flex w-[168px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
-				{currentOrganization ? (
+				{/* {currentOrganization ? (
 					<>
 						<Avatar className="mr-2 size-5">
 							{currentOrganization.avatarUrl && <AvatarImage src={currentOrganization.avatarUrl} />}
@@ -36,15 +40,15 @@ export async function OrganizationSwitcher() {
 						<span className="truncate text-left">{currentOrganization.name}</span>
 					</>
 				) : (
-					<span className="text-muted-foreground">Select organization</span>
-				)}
+					<span className="text-muted-foreground">Select project</span>
+				)} */}
 				<ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
 			</DropdownMenuTrigger>
 
 			<DropdownMenuContent align="end" alignOffset={-16} sideOffset={12} className="w-[200px]">
 				<DropdownMenuGroup>
 					<DropdownMenuLabel>Organizations</DropdownMenuLabel>
-					{organizations.map((org) => {
+					{/* {organizations.map((org) => {
 						return (
 							<DropdownMenuItem key={org.id} asChild>
 								<Link href={`/org/${org.slug}`}>
@@ -57,13 +61,13 @@ export async function OrganizationSwitcher() {
 								</Link>
 							</DropdownMenuItem>
 						);
-					})}
+					})} */}
 				</DropdownMenuGroup>
 
 				<DropdownMenuSeparator />
 
 				<DropdownMenuItem asChild>
-					<Link href="/create-organization">
+					<Link href="/">
 						<PlusCircle className="mr-2 size-5" />
 						Create new
 					</Link>
