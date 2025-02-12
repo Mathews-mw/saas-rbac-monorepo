@@ -7,15 +7,19 @@ import { Label } from '@/components/ui/label';
 import { useFormState } from '@/hooks/use-form-state';
 import { AlertTriangle, Loader2 } from 'lucide-react';
 
-import { saveOrganizationAction } from './actions';
+import { OrganizationSchema, saveOrganizationAction, updateOrganizationAction } from './actions';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useRouter } from 'next/navigation';
 
-export function SaveOrganizationForm() {
-	const router = useRouter();
+interface IProps {
+	isUpdating?: boolean;
+	initialData?: OrganizationSchema;
+}
 
-	const [formState, handleSubmit, isPending] = useFormState(saveOrganizationAction);
+export function SaveOrganizationForm({ isUpdating = false, initialData }: IProps) {
+	const formAction = isUpdating ? updateOrganizationAction : saveOrganizationAction;
+
+	const [formState, handleSubmit, isPending] = useFormState(formAction);
 
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
@@ -37,7 +41,7 @@ export function SaveOrganizationForm() {
 
 			<div className="space-y-1">
 				<Label htmlFor="name">Organization name</Label>
-				<Input name="name" id="name" />
+				<Input name="name" id="name" defaultValue={initialData?.name} />
 				{formState?.errors?.name && (
 					<small className="font-medium text-red-500 dark:text-red-400">{formState.errors.name[0]}</small>
 				)}
@@ -45,7 +49,13 @@ export function SaveOrganizationForm() {
 
 			<div className="space-y-1">
 				<Label htmlFor="domain">E-mail domain</Label>
-				<Input name="domain" id="domain" inputMode="url" placeholder="example.com" />
+				<Input
+					name="domain"
+					id="domain"
+					inputMode="url"
+					placeholder="example.com"
+					defaultValue={initialData?.domain ?? undefined}
+				/>
 				{formState?.errors?.domain && (
 					<small className="font-medium text-red-500 dark:text-red-400">{formState.errors.domain[0]}</small>
 				)}
@@ -54,7 +64,11 @@ export function SaveOrganizationForm() {
 			<div className="space-y-1">
 				<div className="flex items-baseline space-x-2">
 					<div className="translate-y-0.5">
-						<Checkbox name="shouldAttachUserByDomain" id="shouldAttachUserByDomain" />
+						<Checkbox
+							name="shouldAttachUserByDomain"
+							id="shouldAttachUserByDomain"
+							defaultChecked={initialData?.shouldAttachUserByDomain}
+						/>
 					</div>
 					<label htmlFor="shouldAttachUserByDomain" className="space-y-1">
 						<span className="text-sm font-medium leading-none">Auto-join members</span>

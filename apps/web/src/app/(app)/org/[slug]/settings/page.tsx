@@ -1,14 +1,19 @@
 import { SaveOrganizationForm } from '@/app/(app)/create-organization/save-organization-form';
-import { ability } from '@/auth/auth';
+import { ability, getCurrentOrg } from '@/auth/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShutdownOrgButton } from './shutdown-org-buttom';
+import { getOrganization } from '@/_http/requests/get-organization';
+import { Billing } from './billing';
 
 export default async function SettingsPage() {
+	const currentOrg = await getCurrentOrg();
 	const permissions = await ability();
 
 	const canUpdateOrganization = permissions?.can('update', 'Organization');
 	const canGetBilling = permissions?.can('get', 'Billing');
 	const canShutdownOrganization = permissions?.can('delete', 'Organization');
+
+	const { organization } = await getOrganization(currentOrg!);
 
 	return (
 		<div className="space-y-4">
@@ -23,12 +28,19 @@ export default async function SettingsPage() {
 						</CardHeader>
 
 						<CardContent>
-							<SaveOrganizationForm />
+							<SaveOrganizationForm
+								isUpdating
+								initialData={{
+									name: organization.name,
+									domain: organization.domain,
+									shouldAttachUserByDomain: organization.shouldAttachUsersByDomain,
+								}}
+							/>
 						</CardContent>
 					</Card>
 				)}
 
-				{canGetBilling && <div>Billing</div>}
+				{canGetBilling && <Billing />}
 
 				{canShutdownOrganization && (
 					<Card>

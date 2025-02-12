@@ -10,7 +10,13 @@ interface IResponse {
 }
 
 export async function getOrganizations(): Promise<IResponse> {
-	const response = await api.get('organizations').json<IResponse>();
+	const response = await api
+		.get('organizations', {
+			next: {
+				tags: ['organizations'],
+			},
+		})
+		.json<IResponse>();
 
 	return response;
 }
