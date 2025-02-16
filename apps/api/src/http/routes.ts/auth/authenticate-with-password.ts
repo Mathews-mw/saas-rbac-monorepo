@@ -39,15 +39,10 @@ export async function authenticateWithPassword(app: FastifyInstance) {
 			}
 
 			if (userFromEmail.passwordHash === null) {
-				throw new BadRequestError(
-					'User does not have a password. Please, use social login'
-				);
+				throw new BadRequestError('User does not have a password. Please, use social login');
 			}
 
-			const isValidPassword = await bcrypt.compare(
-				password,
-				userFromEmail.passwordHash
-			);
+			const isValidPassword = await bcrypt.compare(password, userFromEmail.passwordHash);
 
 			if (!isValidPassword) {
 				throw new UnauthorizedError('Unauthorized');

@@ -4,10 +4,7 @@ import { AppAbility } from '.';
 import { Role } from './roles';
 import { User } from './models/user';
 
-type PermissionsRole = (
-	user: User,
-	builder: AbilityBuilder<AppAbility>
-) => void;
+type PermissionsRole = (user: User, builder: AbilityBuilder<AppAbility>) => void;
 
 export const permissions: Record<Role, PermissionsRole> = {
 	ADMIN: (user, { can, cannot }) => {
